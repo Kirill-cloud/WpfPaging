@@ -1,0 +1,41 @@
+﻿<Page x:Class="WpfPaging.Pages.Banks"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WpfPaging.Pages"
+      xmlns:models="clr-namespace:WpfPaging.Models"
+      xmlns:viewModels="clr-namespace:WpfPaging.ViewModels"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Banks"
+      DataContext="{Binding BanksViewModel, Source={StaticResource ViewModelLocator}}"
+      >
+
+    <Grid>
+        <StackPanel>
+            <Label>Banks</Label>
+            <Button Command="{Binding GotoMainPage }">Go main</Button>
+            <Button Width="100" HorizontalAlignment="Left" Command="{Binding AddCommand }">New</Button>
+            <ListBox ItemsSource ="{Binding Banks}" >
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type viewModels:BankViewModel}">
+                        <Grid>
+                            <WrapPanel>
+                                <Button  CommandParameter="{Binding}"
+                                         Command="{Binding RemoveCommand}">
+                                    Delete
+                                </Button>
+                                <Button  CommandParameter="{Binding}"
+                                         Command="{Binding EditCommand}">
+                                    Edit
+                                </Button>
+                                <Label Content="{Binding Bank.Name}"></Label>
+                            </WrapPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+    </Grid>
+</Page>

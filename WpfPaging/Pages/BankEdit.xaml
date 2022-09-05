@@ -1,0 +1,204 @@
+﻿<Page x:Class="WpfPaging.Pages.BankEdit"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WpfPaging.Pages"
+      xmlns:viewModels="clr-namespace:WpfPaging.Models"
+      xmlns:viewModels1="clr-namespace:WpfPaging.ViewModels"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="BankEdit"
+      DataContext="{Binding BankEditViewModel, Source={StaticResource ViewModelLocator}}"
+      >
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.ColumnSpan="2" Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type Border}},Path=ActualHeight}">
+            <Button Command="{Binding SaveCommand}">Save</Button>
+            <Label>Наименование банка</Label>
+            <TextBox Text="{Binding Bank.Name}"></TextBox>
+        </StackPanel>
+        <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center">Рейтинговая система</Label>
+        <ScrollViewer Grid.Row="2" Grid.Column="0" HorizontalScrollBarVisibility="Visible" CanContentScroll="True">
+            <StackPanel Orientation="Horizontal">
+                <!--возраст-->
+                <StackPanel>
+                    <Label x:Name="AgeLable" Width="140">Возростные критерии</Label>
+                    <Button Command="{Binding AddCriteria}" CommandParameter="age">Добавить</Button>
+                    <ListBox ItemsSource ="{Binding AgeItems}" >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type viewModels1:ScoreItemViewModel}">
+                                <Border Width="{Binding ElementName=AgeLable, Path=ActualWidth}" BorderBrush="Black" BorderThickness="2">
+                                    <StackPanel >
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="110"/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <Button  CommandParameter="{Binding}"
+                                                     Command="{Binding EditCommand}">
+                                                Изменить
+                                            </Button>
+                                            <Button Grid.Column="1" Width="20" CommandParameter="{Binding}"
+                                                    Command="{Binding RemoveCommand}">
+                                                 X 
+                                            </Button>
+                                        </Grid>
+                                        <StackPanel Orientation="Horizontal">
+                                            <StackPanel>
+                                                <Label>От</Label>
+                                                <Label Content="{Binding Item.MinCondition}"></Label>
+                                            </StackPanel>
+                                            <StackPanel>
+                                                <Label>До</Label>
+                                                <Label Content="{Binding Item.MaxCondition}"></Label>
+                                            </StackPanel>
+                                            <StackPanel>
+                                                <Label>Балл</Label>
+                                                <Label Content="{Binding Item.Points}"></Label>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+                <!--дети-->
+                <StackPanel>
+                    <Label>Кол-во детей</Label>
+                    <Button Command="{Binding AddCriteria}" CommandParameter="kids">Добавить</Button>
+                    <ListBox ItemsSource ="{Binding KidsItems}" >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type viewModels1:ScoreItemViewModel}">
+                                <Grid>
+                                    <Border>
+                                        <StackPanel >
+                                            <Button  CommandParameter="{Binding}"
+                                                         Command="{Binding RemoveCommand}">
+                                                Delete
+                                            </Button>
+                                            <Button  CommandParameter="{Binding}"
+                                                         Command="{Binding EditCommand}">
+                                                Edit
+                                            </Button>
+                                            <Label>От</Label>
+                                            <Label Content="{Binding Item.MinCondition}"></Label>
+                                            <Label>До</Label>
+                                            <Label Content="{Binding Item.MaxCondition}"></Label>
+                                            <Label>Балл</Label>
+                                            <Label Content="{Binding Item.Points}"></Label>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+                <!--семья-->
+                <StackPanel>
+                    <Label>Семейное положение</Label>
+                    <Button Command="{Binding AddCriteria}" CommandParameter="family">Добавить</Button>
+                    <ListBox ItemsSource ="{Binding FamilyItems}" >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type viewModels1:ScoreItemViewModel}">
+                                <Grid>
+                                    <Border>
+                                        <StackPanel >
+                                            <Button  CommandParameter="{Binding}"
+                                                         Command="{Binding RemoveCommand}">
+                                                Delete
+                                            </Button>
+                                            <Button  CommandParameter="{Binding}"
+                                                         Command="{Binding EditCommand}">
+                                                Edit
+                                            </Button>
+                                            <Label>Значение</Label>
+                                            <Label Content="{Binding ExactValue}"></Label>
+                                            <Label>Балл</Label>
+                                            <Label Content="{Binding Item.Points}"></Label>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+                <!--занятость-->
+                <StackPanel>
+                    <Label>Тип занятости</Label>
+                    <Button Command="{Binding AddCriteria}" CommandParameter="job">Добавить</Button>
+                    <ListBox ItemsSource ="{Binding JobItems}" >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type viewModels1:ScoreItemViewModel}">
+                                <Grid>
+                                    <Border>
+                                        <StackPanel >
+                                            <Button  CommandParameter="{Binding}"
+                                                         Command="{Binding RemoveCommand}">
+                                                Delete
+                                            </Button>
+                                            <Button  CommandParameter="{Binding}"
+                                                         Command="{Binding EditCommand}">
+                                                Edit
+                                            </Button>
+                                            <Label>Значение</Label>
+                                            <Label Content="{Binding ExactValue}"></Label>
+                                            <Label>Балл</Label>
+                                            <Label Content="{Binding Item.Points}"></Label>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+                <!--квалификация-->
+                <StackPanel>
+                    <Label>Квалификации</Label>
+                    <Button Command="{Binding AddCriteria}" CommandParameter="qualification">Добавить</Button>
+                    <ListBox ItemsSource ="{Binding QualificationItems}" >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type viewModels1:ScoreItemViewModel}">
+                                <Grid>
+                                    <Border>
+                                        <StackPanel >
+                                            <Button  CommandParameter="{Binding}"
+                                                         Command="{Binding RemoveCommand}">
+                                                Delete
+                                            </Button>
+                                            <Button  CommandParameter="{Binding}"
+                                                         Command="{Binding EditCommand}">
+                                                Edit
+                                            </Button>
+                                            <Label>Значение</Label>
+                                            <Label Content="{Binding ExactValue}"></Label>
+                                            <Label>Балл</Label>
+                                            <Label Content="{Binding Item.Points}"></Label>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+        <Label Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center">Кредитные предложения</Label>
+        <ScrollViewer Grid.Row="2" Grid.Column="1">
+            <StackPanel>
+                <Button Command="{Binding AddPlan}">Добавить</Button>
+                <ListBox ItemsSource="{Binding CreditPlans}"></ListBox>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>
