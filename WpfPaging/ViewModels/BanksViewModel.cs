@@ -39,12 +39,9 @@ namespace WpfPaging.ViewModels
             if (message.Text == "update")
             {
                 var banks = await _db.Banks
-                   
+                    .Include(b => b.CreditPlans)
+                    .Include(b => b.ScoringSystemsItems)
                     .AsNoTracking().ToListAsync();
-                //await Task.Run(() =>
-                //{
-                //    Thread.Sleep(3000);
-                //});
                 Banks = banks.Select(x => new BankViewModel(_messageBus, _pageService) { Bank = x }).ToList();
             }
             else if (message.Text == "remove" && message.Id.HasValue)

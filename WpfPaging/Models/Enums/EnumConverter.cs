@@ -38,6 +38,14 @@ namespace WpfPaging.Models.Enums
             _ => throw new NotSupportedException("не известное состояние")
         };
 
+        private static string GetStringState(CreditTarget state) => state switch
+        {
+            CreditTarget.Other => "Другие",
+            CreditTarget.Auto => "Авто",
+            CreditTarget.Mortgage => "Ипотека",
+            _ => throw new NotSupportedException("не известное состояние")
+        };
+
         public static string GetString<T>(T state)
         {
             if (state is FamilyStates family)
@@ -53,6 +61,11 @@ namespace WpfPaging.Models.Enums
             if (state is QualificationTypes qualification)
             {
                 return GetStringState(qualification);
+            }
+
+            if (state is CreditTarget target)
+            {
+                return GetStringState(target);
             }
 
             throw new NotSupportedException();

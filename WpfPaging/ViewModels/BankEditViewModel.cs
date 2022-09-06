@@ -54,17 +54,33 @@ namespace WpfPaging.ViewModels
             }
         }
 
+        public List<CreditPlanDetailedViewModel> CreditPlans
+        {
+            get
+            {
+                if (Bank != null && Bank.CreditPlans != null)
+                {
+                    return Bank.CreditPlans.Select(x => new CreditPlanDetailedViewModel(_messageBus, _pageService)
+                    {
+                        Item = x
+                    }).ToList();
+                }
+
+                return null;
+            }
+        }
+
         private async Task ReciveHandler(TextMessage message)
         {
             if (message.Text == "update")
             {
                 //TODO refactor
-                RaisePropertyChanged(nameof(Bank));
                 RaisePropertyChanged(nameof(AgeItems));
                 RaisePropertyChanged(nameof(KidsItems));
                 RaisePropertyChanged(nameof(FamilyItems));
                 RaisePropertyChanged(nameof(JobItems));
                 RaisePropertyChanged(nameof(QualificationItems));
+                RaisePropertiesChanged(nameof(CreditPlans));
             }
             else if (message.Text == "edit")
             {
@@ -82,10 +98,16 @@ namespace WpfPaging.ViewModels
                     _db.Banks.Add(Bank);
                 }
             }
-            else if (message.Text == "remove" && message.Id.HasValue)
+            else if (message.Text == "removeScore" && message.Id.HasValue)
             {
                 _db.ScoringSystems.Remove(_db.ScoringSystems.Find(message.Id));
                 Bank.ScoringSystemsItems = Bank.ScoringSystemsItems.Where(b => b.Id != message.Id).ToList();
+                await _db.SaveChangesAsync();
+            }
+            else if (message.Text == "removePlan" && message.Id.HasValue)
+            {
+                _db.CreditPlans.Remove(_db.CreditPlans.Find(message.Id));
+                Bank.CreditPlans = Bank.CreditPlans.Where(b => b.Id != message.Id).ToList();
                 await _db.SaveChangesAsync();
             }
         }
@@ -122,10 +144,16 @@ namespace WpfPaging.ViewModels
             _pageService.ChangePage(new ScoringItemEdit());
         });
 
-        public ICommand<string> AddCreditPlan => new AsyncCommand<string>(async s =>
+        public ICommand<string> AddPlan => new AsyncCommand<string>(async s =>
         {
-            // message await _messageBus.SendTo<ScoreItemEditViewModel>(new ScoreSystemMessage(type, Bank.Id, 0));
-            // change page _pageService.ChangePage(new ScoringItemEdit());
+            if (Bank.Id == 0)
+            {
+                _db.Banks.Add(Bank);
+                await _db.SaveChangesAsync();
+            }
+
+            await _messageBus.SendTo<PlanEditViewModel>(new DependedObjectMessage(Bank.Id, 0));
+            _pageService.ChangePage(new PlanEdit());
         });
     }
 }

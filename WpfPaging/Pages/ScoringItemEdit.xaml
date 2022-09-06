@@ -13,13 +13,13 @@
     <Grid>
         <StackPanel>
             <Label Visibility="{Binding RangeVisibility}">Минимальное</Label>
-            <TextBox Visibility="{Binding RangeVisibility}" Text="{Binding MinCondition}"></TextBox>
+            <TextBox Visibility="{Binding RangeVisibility}" Text="{Binding MinCondition, ValidatesOnDataErrors=True}" ToolTip="{Binding MinError}"></TextBox>
             <Label Visibility="{Binding RangeVisibility}">Максимальное</Label>
-            <TextBox Visibility="{Binding RangeVisibility}" Text="{Binding MaxCondition}"></TextBox>
+            <TextBox Visibility="{Binding RangeVisibility}" Text="{Binding MaxCondition, ValidatesOnDataErrors=True}" ToolTip="{Binding MaxError}"></TextBox>
             <Label Visibility="{Binding ExactVisibility}">Значение</Label>
-            <ComboBox Visibility="{Binding ExactVisibility}" ItemsSource="{Binding ExactValues}" SelectedItem="{Binding ExactValue}"></ComboBox>
+            <ComboBox Visibility="{Binding ExactVisibility}" ItemsSource="{Binding ExactValues, ValidatesOnDataErrors=True}" ToolTip="{Binding ExactError}" SelectedItem="{Binding ExactValue}"></ComboBox>
             <Label>Очки</Label>
-            <TextBox Text="{Binding Points}"></TextBox>
+            <TextBox Text="{Binding Points, ValidatesOnDataErrors=True}" ToolTip="{Binding PointsError}"></TextBox>
             <Button Command="{Binding SaveCommand }">Save</Button>
         </StackPanel>
     </Grid>

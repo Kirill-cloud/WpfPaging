@@ -59,7 +59,7 @@ namespace WpfPaging.ViewModels
 
         public ICommand RemoveCommand => new AsyncCommand(async () =>
             {
-                await _messageBus.SendTo<BankEditViewModel>(new TextMessage("remove", Item.Id));
+                await _messageBus.SendTo<BankEditViewModel>(new TextMessage("removeScore", Item.Id));
                 await _messageBus.SendTo<BankEditViewModel>(new TextMessage("update"));
             });
 

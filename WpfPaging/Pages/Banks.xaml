@@ -13,29 +13,86 @@
       >
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
         <StackPanel>
-            <Label>Banks</Label>
-            <Button Command="{Binding GotoMainPage }">Go main</Button>
-            <Button Width="100" HorizontalAlignment="Left" Command="{Binding AddCommand }">New</Button>
-            <ListBox ItemsSource ="{Binding Banks}" >
+            <Label>Банки</Label>
+            <Button Command="{Binding GotoMainPage }">На главную</Button>
+            <Button Width="100" HorizontalAlignment="Left" Command="{Binding AddCommand }">Добавить банк</Button>
+        </StackPanel>
+        <ScrollViewer Grid.Row="1">
+            <ListBox Margin="0" Padding="-5"  ItemsSource ="{Binding Banks}" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}, Path=ActualWidth}" >
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type viewModels:BankViewModel}">
-                        <Grid>
-                            <WrapPanel>
-                                <Button  CommandParameter="{Binding}"
-                                         Command="{Binding RemoveCommand}">
-                                    Delete
-                                </Button>
-                                <Button  CommandParameter="{Binding}"
-                                         Command="{Binding EditCommand}">
-                                    Edit
-                                </Button>
-                                <Label Content="{Binding Bank.Name}"></Label>
-                            </WrapPanel>
-                        </Grid>
+                        <Border Margin="0" Padding="5" BorderBrush="Black" BorderThickness="5" 
+                                Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}, Path=ActualWidth}"
+                                >
+                            <StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                        
+                                    </Grid.ColumnDefinitions>
+                                    <Label Content="{Binding Bank.Name}" HorizontalAlignment="Center"></Label>
+                                    <Button HorizontalAlignment="Right" Width="20" Margin="0,0,15,0"  CommandParameter="{Binding}"
+                                             Command="{Binding RemoveCommand}">
+                                        Х
+                                    </Button>
+                                    <Button HorizontalAlignment="Right" Width="100"  Margin="0, 0, 40, 0" CommandParameter="{Binding}"
+                                            Command="{Binding EditCommand}">
+                                        Изменить
+                                    </Button>
+                                </Grid>    
+                                <WrapPanel>
+                                    <Border BorderThickness=".3" BorderBrush="Black">
+                                        <StackPanel>
+                                            <Label>Кредитных планлов</Label>
+                                            <Label Content="{Binding Bank.CreditPlans.Count}"></Label>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border BorderThickness=".3" BorderBrush="Black">
+                                        <StackPanel>
+                                            <Label>Параметров возроста</Label>
+                                            <Label Content="{Binding AgeParamsCount}"></Label>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border BorderThickness=".3" BorderBrush="Black">
+                                        <StackPanel>
+                                            <Label>Параметров детей</Label>
+                                            <Label Content="{Binding KidsParamsCount}"></Label>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border BorderThickness=".3" BorderBrush="Black">
+                                        <StackPanel>
+                                            <Label>Параметров работы</Label>
+                                            <Label Content="{Binding JobParamsCount}"></Label>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border BorderThickness=".3" BorderBrush="Black">
+                                        <StackPanel>
+                                            <Label>Параметров семейного положения</Label>
+                                            <Label Content="{Binding FamilyParamsCount}"></Label>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border BorderThickness=".3" BorderBrush="Black">
+                                        <StackPanel>
+                                            <Label>Параметров квалификации</Label>
+                                            <Label Content="{Binding QualificationParamsCount}"></Label>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border BorderThickness=".3" BorderBrush="Black">
+                                        <StackPanel>
+                                            <Label>Всего параметров</Label>
+                                            <Label Content="{Binding Bank.ScoringSystemsItems.Count}"></Label>
+                                        </StackPanel>
+                                    </Border>
+                                </WrapPanel>
+                            </StackPanel>
+                        </Border>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-        </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>

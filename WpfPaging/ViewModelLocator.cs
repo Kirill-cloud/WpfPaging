@@ -21,6 +21,7 @@ namespace WpfPaging
             services.AddSingleton<BankEditViewModel>();
             services.AddSingleton<ScoreItemEditViewModel>();
             services.AddSingleton<PlansViewModel>();
+            services.AddSingleton<PlanEditViewModel>();
 
             services.AddScoped<LogPageViewModel>();
 
@@ -46,5 +47,6 @@ namespace WpfPaging
         public BanksViewModel BanksViewModel => _provider.GetRequiredService<BanksViewModel>();
         public BankEditViewModel BankEditViewModel => _provider.GetRequiredService<BankEditViewModel>();
         public ScoreItemEditViewModel ScoreItemEditViewModel => _provider.GetRequiredService<ScoreItemEditViewModel>();
+        public PlanEditViewModel PlanEditViewModel => _provider.GetRequiredService<PlanEditViewModel>();
     }
 }

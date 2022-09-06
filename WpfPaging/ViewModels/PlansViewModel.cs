@@ -170,11 +170,13 @@ namespace WpfPaging.ViewModels
 
         public ICommand Reset => new AsyncCommand(async () =>
         {
+            _changes = false;
             Age = null;
             Kids = null;
             Job = null;
             Family = null;
             Qualification = null;
+            CreditPlans = null;
         });
     }
 }

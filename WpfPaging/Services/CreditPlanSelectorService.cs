@@ -37,7 +37,7 @@ namespace WpfPaging.Services
                     {
                         case ScoringItemType.Age:
                             var agePoints = group.Where(x =>user.Age.HasValue && user.Age >= x.MinCondition && user.Age <= x.MaxCondition)
-                                .OrderBy(x => x.Points).FirstOrDefault();
+                                .OrderByDescending(x => x.Points).FirstOrDefault();
                             if (agePoints != null)
                             {
                                 score += agePoints.Points;
@@ -45,7 +45,7 @@ namespace WpfPaging.Services
                             break;
                         case ScoringItemType.KidsAmount:
                             var kidsPoints = group.Where(x => user.KidsAmount.HasValue && user.KidsAmount >= x.MinCondition && user.KidsAmount <= x.MaxCondition)
-                                .OrderBy(x => x.Points).FirstOrDefault();
+                                .OrderByDescending(x => x.Points).FirstOrDefault();
                             if (kidsPoints != null)
                             {
                                 score += kidsPoints.Points;
@@ -53,7 +53,7 @@ namespace WpfPaging.Services
                             break;
                         case ScoringItemType.JobType:
                             var jobPoints = group.Where(x => user.JobType.HasValue && x.ExactValue == (int)user.JobType)
-                                .OrderBy(x => x.Points).FirstOrDefault();
+                                .OrderByDescending(x => x.Points).FirstOrDefault();
                             if (jobPoints != null)
                             {
                                 score += jobPoints.Points;
@@ -61,7 +61,7 @@ namespace WpfPaging.Services
                             break;
                         case ScoringItemType.FamilyState:
                             var familyPoints = group.Where(x => user.FamilyState.HasValue && x.ExactValue == (int)user.FamilyState)
-                                .OrderBy(x => x.Points).FirstOrDefault();
+                                .OrderByDescending(x => x.Points).FirstOrDefault();
                             if (familyPoints != null)
                             {
                                 score += familyPoints.Points;
@@ -69,7 +69,7 @@ namespace WpfPaging.Services
                             break;
                         case ScoringItemType.Qualification:
                             var qualificationPoints = group.Where(x => user.Qualification.HasValue && x.ExactValue == (int)user.Qualification)
-                                .OrderBy(x => x.Points).FirstOrDefault();
+                                .OrderByDescending(x => x.Points).FirstOrDefault();
                             if (qualificationPoints != null)
                             {
                                 score += qualificationPoints.Points;
@@ -86,7 +86,7 @@ namespace WpfPaging.Services
                 result.AddRange(score.Key.CreditPlans.Where(x => x.Target == target && x.MinimalScore <= score.Value));
             }
 
-            result = result.OrderBy(x => x.Amount).ToList();
+            result = result.OrderByDescending(x => x.Amount).ToList();
 
             //Нужно чтобы показать анимацию...(имитация нагрузки)
             await Task.Run(() => { Thread.Sleep(2000); });

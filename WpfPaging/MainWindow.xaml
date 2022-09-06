@@ -9,6 +9,8 @@
     Title="MainWindow"
     Width="800"
     Height="600"
+    MinWidth="350"
+    MinHeight="300"
     DataContext="{Binding MainViewModel, Source={StaticResource ViewModelLocator}}"
     mc:Ignorable="d">
 

@@ -1,6 +1,7 @@
 ﻿using DevExpress.Mvvm;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -13,21 +14,23 @@ using WpfPaging.Models;
 using WpfPaging.Models.Enums;
 using WpfPaging.Pages;
 using WpfPaging.Services;
+using EnumConverter = WpfPaging.Models.Enums.EnumConverter;
+using System.Windows.Controls;
 
 namespace WpfPaging.ViewModels
 {
-    public class ScoreItemEditViewModel : BindableBase
+    public class ScoreItemEditViewModel : BindableBase, IDataErrorInfo
     {
         private readonly BankContext _db;
         private readonly MessageBus _messageBus;
         private readonly PageService _pageService;
         private Bank _bank;
-        public ScoringSystemItem Item { get; set; }
+        public ScoringSystemItem ScoreItem { get; set; }
         public Visibility RangeVisibility
         {
             get
             {
-                if (Item.Type == ScoringItemType.Age || Item.Type == ScoringItemType.KidsAmount)
+                if (ScoreItem.Type == ScoringItemType.Age || ScoreItem.Type == ScoringItemType.KidsAmount)
                 {
                     return Visibility.Visible;
                 }
@@ -41,7 +44,7 @@ namespace WpfPaging.ViewModels
         {
             get
             {
-                if (Item.Type == ScoringItemType.FamilyState || Item.Type == ScoringItemType.Qualification || Item.Type == ScoringItemType.JobType)
+                if (ScoreItem.Type == ScoringItemType.FamilyState || ScoreItem.Type == ScoringItemType.Qualification || ScoreItem.Type == ScoringItemType.JobType)
                 {
                     return Visibility.Visible;
                 }
@@ -56,14 +59,14 @@ namespace WpfPaging.ViewModels
         {
             get
             {
-                return Item.MinCondition.ToString();
+                return ScoreItem.MinCondition.ToString();
             }
             set
             {
                 int t;
                 if (int.TryParse(value, out t))
                 {
-                    Item.MinCondition = t;
+                    ScoreItem.MinCondition = t;
                 }
             }
         }
@@ -72,14 +75,14 @@ namespace WpfPaging.ViewModels
         {
             get
             {
-                return Item.MaxCondition.ToString();
+                return ScoreItem.MaxCondition.ToString();
             }
             set
             {
                 int t;
                 if (int.TryParse(value, out t))
                 {
-                    Item.MaxCondition = t;
+                    ScoreItem.MaxCondition = t;
                 }
             }
         }
@@ -92,7 +95,7 @@ namespace WpfPaging.ViewModels
 
         private List<NamedValue> GetComboBoxValues()
         {
-            if (Item.Type == ScoringItemType.FamilyState)
+            if (ScoreItem.Type == ScoringItemType.FamilyState)
             {
                 return EnumConverter.GetEnumMembersNumbers<FamilyStates>().Select(x => new NamedValue()
                 {
@@ -101,7 +104,7 @@ namespace WpfPaging.ViewModels
                 }).ToList();
             }
 
-            if (Item.Type == ScoringItemType.JobType)
+            if (ScoreItem.Type == ScoringItemType.JobType)
             {
                 return EnumConverter.GetEnumMembersNumbers<JobTypes>().Select(x => new NamedValue()
                 {
@@ -110,7 +113,7 @@ namespace WpfPaging.ViewModels
                 }).ToList();
             }
 
-            if (Item.Type == ScoringItemType.Qualification)
+            if (ScoreItem.Type == ScoringItemType.Qualification)
             {
                 return EnumConverter.GetEnumMembersNumbers<QualificationTypes>().Select(x => new NamedValue()
                 {
@@ -136,7 +139,7 @@ namespace WpfPaging.ViewModels
                 _exactValue = value;
                 if (value != null)
                 {
-                    Item.ExactValue = _exactValue.Value;
+                    ScoreItem.ExactValue = _exactValue.Value;
                 }
             }
         }
@@ -145,14 +148,14 @@ namespace WpfPaging.ViewModels
         {
             get
             {
-                return Item.Points.ToString();
+                return ScoreItem.Points.ToString();
             }
             set
             {
                 int t;
                 if (int.TryParse(value, out t))
                 {
-                    Item.Points = t;
+                    ScoreItem.Points = t;
                 }
             }
         }
@@ -163,28 +166,22 @@ namespace WpfPaging.ViewModels
             _db = db;
             _pageService = pageService;
             _messageBus.Receive<ScoreSystemMessage>(this, ReciveTypeHandler);
-            _messageBus.Receive<TextMessage>(this, ReciveTextHandler);
-        }
-
-        private async Task ReciveTextHandler(TextMessage arg)
-        {
-            if (arg.Text == "edit" && arg.Id.HasValue)
-            {
-            }
         }
 
         private async Task ReciveTypeHandler(ScoreSystemMessage arg)
         {
             if (arg.ScoringItemId != 0)
             {
-                Item = _db.ScoringSystems.FirstOrDefault(c => c.Id == arg.ScoringItemId);
+                ScoreItem = _db.ScoringSystems.FirstOrDefault(c => c.Id == arg.ScoringItemId);
                 _exactValues = GetComboBoxValues();
-                ExactValue = ExactValues.Find(x => x.Value == Item.ExactValue);
-
+                if (_exactValues != null)
+                {
+                    ExactValue = ExactValues.Find(x => x.Value == ScoreItem.ExactValue);
+                }
             }
             else
             {
-                Item = new ScoringSystemItem()
+                ScoreItem = new ScoringSystemItem()
                 {
                     Type = arg.ScoringItemType,
                     Bank = _db.Banks.Include(b => b.ScoringSystemsItems).FirstOrDefault(b => b.Id == arg.BankId)
@@ -195,10 +192,78 @@ namespace WpfPaging.ViewModels
         public ICommand SaveCommand => new AsyncCommand(async () =>
         {
             _pageService.ChangePage(new Loading());
-            _db.ScoringSystems.Update(Item);
+            _db.ScoringSystems.Update(ScoreItem);
             await _db.SaveChangesAsync();
             await _messageBus.SendTo<BankEditViewModel>(new TextMessage("update"));
             _pageService.ChangePage(new BankEdit());
-        });
+        }, CanExecuteMethod);
+
+        private bool CanExecuteMethod()
+        {
+            return ScoreItem.IsValid;
+        }
+
+        Func<string, string> selector = str => str.ToUpper();
+
+        public string Error => throw new NotImplementedException();
+        public string PointsError { get; set; }
+        public string MinError { get; set; }
+        public string MaxError { get; set; }
+        public string ExactError { get; set; }
+        public string this[string columnName]
+        {
+            get
+            {
+                string error = String.Empty;
+                switch (columnName)
+                {
+                    case nameof(Points):
+                        if (Points != null && Points != string.Empty && Convert.ToInt32(Points) < 0)
+                        {
+                            error = "должен быть больше 0";
+                            PointsError = error;
+                        }
+                        else
+                        {
+                            PointsError = null;
+                        }
+                        break;
+                    case nameof(MinCondition):
+                        if (MinCondition != null && MinCondition != string.Empty && Convert.ToInt32(MinCondition) < 0)
+                        {
+                            error = "должен быть больше 0";
+                            MinError = error;
+                        }
+                        else
+                        {
+                            MinError = null;
+                        }
+                        break;
+                    case nameof(MaxCondition):
+                        if (MaxCondition != null && MaxCondition != string.Empty && Convert.ToInt32(MaxCondition) < 0)
+                        {
+                            error = "должен быть больше 0";
+                            MaxError = error;
+                        }
+                        else
+                        {
+                            MaxError = null;
+                        }
+                        break;
+                    //case nameof(ExactValue):
+                    //    if (ExactValue != null && ExactValue != string.Empty && Convert.ToInt32(ExactValue) < 0)
+                    //    {
+                    //        error = "должен быть больше 0";
+                    //        ExactError = error;
+                    //    }
+                    //    else
+                    //    {
+                    //        ExactError = null;
+                    //    }
+                    //    break;
+                }
+                return error;
+            }
+        }
     }
 }

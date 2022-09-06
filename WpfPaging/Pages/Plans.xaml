@@ -9,23 +9,25 @@
         DataContext="{Binding PlansViewModel, Source={StaticResource ViewModelLocator}}"
         >
     <Grid>
-        <StackPanel HorizontalAlignment="Center">
-            <Button Command="{Binding GoToMain}">На главную</Button>
-            <Label>Данные клиента</Label>
-            <Label>Возраст</Label>
-            <TextBox Text="{Binding Age}"></TextBox>
-            <Label>Кол-во детей</Label>
-            <TextBox Text="{Binding Kids}"></TextBox>
-            <Label>Семейное положение</Label>
-            <ComboBox ItemsSource="{Binding Families}" SelectedItem="{Binding Family}"></ComboBox>
-            <Label>Вид работы</Label>
-            <ComboBox ItemsSource="{Binding Jobs}" SelectedItem="{Binding Job}"></ComboBox>
-            <Label>Квалификация</Label>
-            <ComboBox ItemsSource="{Binding Qualifications}" SelectedItem="{Binding Qualification}"></ComboBox>
-            <Button Command="{Binding Reset}">Сброс</Button>
-            <Button Command="{Binding GetPlans}">Подобрать</Button>
-            <Label Visibility="{Binding NoPlans}" Background="#FFE66767">Для данных параметров нет доступных предложений</Label>
-            <ListBox ItemsSource="{Binding CreditPlans}"></ListBox>
-        </StackPanel>
+        <ScrollViewer>
+            <StackPanel HorizontalAlignment="Center">
+                <Button Command="{Binding GoToMain}">На главную</Button>
+                <Label>Данные клиента</Label>
+                <Label>Возраст</Label>
+                <TextBox Text="{Binding Age}"></TextBox>
+                <Label>Кол-во детей</Label>
+                <TextBox Text="{Binding Kids}"></TextBox>
+                <Label>Семейное положение</Label>
+                <ComboBox ItemsSource="{Binding Families}" SelectedItem="{Binding Family}"></ComboBox>
+                <Label>Вид работы</Label>
+                <ComboBox ItemsSource="{Binding Jobs}" SelectedItem="{Binding Job}"></ComboBox>
+                <Label>Квалификация</Label>
+                <ComboBox ItemsSource="{Binding Qualifications}" SelectedItem="{Binding Qualification}"></ComboBox>
+                <Button Command="{Binding Reset}">Сброс</Button>
+                <Button Command="{Binding GetPlans}">Подобрать</Button>
+                <Label Visibility="{Binding NoPlans}" Background="#FFE66767">Для данных параметров нет доступных предложений</Label>
+                <ListBox ItemsSource="{Binding CreditPlans}"></ListBox>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>

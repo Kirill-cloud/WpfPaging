@@ -4,8 +4,8 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WpfPaging.Pages"
-      xmlns:viewModels="clr-namespace:WpfPaging.Models"
-      xmlns:viewModels1="clr-namespace:WpfPaging.ViewModels"
+      xmlns:models="clr-namespace:WpfPaging.Models"
+      xmlns:viewModels="clr-namespace:WpfPaging.ViewModels"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="BankEdit"
@@ -36,7 +36,7 @@
                     <Button Command="{Binding AddCriteria}" CommandParameter="age">Добавить</Button>
                     <ListBox ItemsSource ="{Binding AgeItems}" >
                         <ListBox.ItemTemplate>
-                            <DataTemplate DataType="{x:Type viewModels1:ScoreItemViewModel}">
+                            <DataTemplate DataType="{x:Type viewModels:ScoreItemViewModel}">
                                 <Border Width="{Binding ElementName=AgeLable, Path=ActualWidth}" BorderBrush="Black" BorderThickness="2">
                                     <StackPanel >
                                         <Grid>
@@ -50,10 +50,10 @@
                                             </Button>
                                             <Button Grid.Column="1" Width="20" CommandParameter="{Binding}"
                                                     Command="{Binding RemoveCommand}">
-                                                 X 
+                                                X
                                             </Button>
                                         </Grid>
-                                        <StackPanel Orientation="Horizontal">
+                                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                             <StackPanel>
                                                 <Label>От</Label>
                                                 <Label Content="{Binding Item.MinCondition}"></Label>
@@ -75,31 +75,43 @@
                 </StackPanel>
                 <!--дети-->
                 <StackPanel>
-                    <Label>Кол-во детей</Label>
+                    <Label Width="140">Кол-во детей</Label>
                     <Button Command="{Binding AddCriteria}" CommandParameter="kids">Добавить</Button>
                     <ListBox ItemsSource ="{Binding KidsItems}" >
                         <ListBox.ItemTemplate>
-                            <DataTemplate DataType="{x:Type viewModels1:ScoreItemViewModel}">
-                                <Grid>
-                                    <Border>
-                                        <StackPanel >
-                                            <Button  CommandParameter="{Binding}"
-                                                         Command="{Binding RemoveCommand}">
-                                                Delete
+                            <DataTemplate DataType="{x:Type viewModels:ScoreItemViewModel}">
+                                <Border Width="{Binding ElementName=AgeLable, Path=ActualWidth}" BorderBrush="Black" BorderThickness="2">
+                                    <StackPanel >
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="110"/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <Button Width="20" Grid.Column="1" CommandParameter="{Binding}"
+                                                     Command="{Binding RemoveCommand}">
+                                                X
                                             </Button>
                                             <Button  CommandParameter="{Binding}"
                                                          Command="{Binding EditCommand}">
-                                                Edit
+                                                Изменить
                                             </Button>
-                                            <Label>От</Label>
-                                            <Label Content="{Binding Item.MinCondition}"></Label>
-                                            <Label>До</Label>
-                                            <Label Content="{Binding Item.MaxCondition}"></Label>
-                                            <Label>Балл</Label>
-                                            <Label Content="{Binding Item.Points}"></Label>
+                                        </Grid>
+                                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                            <StackPanel>
+                                                <Label>От</Label>
+                                                <Label Content="{Binding Item.MinCondition}"></Label>
+                                            </StackPanel>
+                                            <StackPanel>
+                                                <Label>До</Label>
+                                                <Label Content="{Binding Item.MaxCondition}"></Label>
+                                            </StackPanel>
+                                            <StackPanel>
+                                                <Label>Балл</Label>
+                                                <Label Content="{Binding Item.Points}"></Label>
+                                            </StackPanel>
                                         </StackPanel>
-                                    </Border>
-                                </Grid>
+                                    </StackPanel>
+                                </Border>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
@@ -110,25 +122,29 @@
                     <Button Command="{Binding AddCriteria}" CommandParameter="family">Добавить</Button>
                     <ListBox ItemsSource ="{Binding FamilyItems}" >
                         <ListBox.ItemTemplate>
-                            <DataTemplate DataType="{x:Type viewModels1:ScoreItemViewModel}">
-                                <Grid>
-                                    <Border>
-                                        <StackPanel >
-                                            <Button  CommandParameter="{Binding}"
-                                                         Command="{Binding RemoveCommand}">
-                                                Delete
+                            <DataTemplate DataType="{x:Type viewModels:ScoreItemViewModel}">
+                                <Border Width="140" BorderBrush="Black" BorderThickness="2">
+                                    <StackPanel >
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="110"/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <Button Width="20" Grid.Column="1" CommandParameter="{Binding}"
+                                                    Command="{Binding RemoveCommand}">
+                                                X
                                             </Button>
                                             <Button  CommandParameter="{Binding}"
-                                                         Command="{Binding EditCommand}">
-                                                Edit
+                                                     Command="{Binding EditCommand}">
+                                                Изменить
                                             </Button>
-                                            <Label>Значение</Label>
-                                            <Label Content="{Binding ExactValue}"></Label>
-                                            <Label>Балл</Label>
-                                            <Label Content="{Binding Item.Points}"></Label>
-                                        </StackPanel>
-                                    </Border>
-                                </Grid>
+                                        </Grid>
+                                        <Label>Значение</Label>
+                                        <Label Content="{Binding ExactValue}"></Label>
+                                        <Label>Балл</Label>
+                                        <Label Content="{Binding Item.Points}"></Label>
+                                    </StackPanel>
+                                </Border>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
@@ -139,25 +155,30 @@
                     <Button Command="{Binding AddCriteria}" CommandParameter="job">Добавить</Button>
                     <ListBox ItemsSource ="{Binding JobItems}" >
                         <ListBox.ItemTemplate>
-                            <DataTemplate DataType="{x:Type viewModels1:ScoreItemViewModel}">
-                                <Grid>
-                                    <Border>
-                                        <StackPanel >
-                                            <Button  CommandParameter="{Binding}"
-                                                         Command="{Binding RemoveCommand}">
-                                                Delete
+                            <DataTemplate DataType="{x:Type viewModels:ScoreItemViewModel}">
+                                <Border Width="140" BorderBrush="Black" BorderThickness="2">
+                                    <StackPanel >
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="110"/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <Button Width="20" Grid.Column="1" CommandParameter="{Binding}"
+                                                     Command="{Binding RemoveCommand}">
+                                                X
                                             </Button>
                                             <Button  CommandParameter="{Binding}"
-                                                         Command="{Binding EditCommand}">
-                                                Edit
+                                                     Command="{Binding EditCommand}">
+                                                Изменить
                                             </Button>
-                                            <Label>Значение</Label>
-                                            <Label Content="{Binding ExactValue}"></Label>
-                                            <Label>Балл</Label>
-                                            <Label Content="{Binding Item.Points}"></Label>
-                                        </StackPanel>
-                                    </Border>
-                                </Grid>
+                                        </Grid>
+
+                                        <Label>Значение</Label>
+                                        <Label Content="{Binding ExactValue}"></Label>
+                                        <Label>Балл</Label>
+                                        <Label Content="{Binding Item.Points}"></Label>
+                                    </StackPanel>
+                                </Border>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
@@ -168,25 +189,29 @@
                     <Button Command="{Binding AddCriteria}" CommandParameter="qualification">Добавить</Button>
                     <ListBox ItemsSource ="{Binding QualificationItems}" >
                         <ListBox.ItemTemplate>
-                            <DataTemplate DataType="{x:Type viewModels1:ScoreItemViewModel}">
-                                <Grid>
-                                    <Border>
-                                        <StackPanel >
-                                            <Button  CommandParameter="{Binding}"
-                                                         Command="{Binding RemoveCommand}">
-                                                Delete
+                            <DataTemplate DataType="{x:Type viewModels:ScoreItemViewModel}">
+                                <Border BorderBrush="Black" BorderThickness="2" Width="200">
+                                    <StackPanel >
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="170"/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <Button Width="20" Grid.Column="1" CommandParameter="{Binding}"
+                                                        Command="{Binding RemoveCommand}">
+                                                X
                                             </Button>
                                             <Button  CommandParameter="{Binding}"
                                                          Command="{Binding EditCommand}">
-                                                Edit
+                                                Изменить
                                             </Button>
-                                            <Label>Значение</Label>
-                                            <Label Content="{Binding ExactValue}"></Label>
-                                            <Label>Балл</Label>
-                                            <Label Content="{Binding Item.Points}"></Label>
-                                        </StackPanel>
-                                    </Border>
-                                </Grid>
+                                        </Grid>
+                                        <Label>Значение</Label>
+                                        <Label Content="{Binding ExactValue}"></Label>
+                                        <Label>Балл</Label>
+                                        <Label Content="{Binding Item.Points}"></Label>
+                                    </StackPanel>
+                                </Border>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
@@ -197,7 +222,45 @@
         <ScrollViewer Grid.Row="2" Grid.Column="1">
             <StackPanel>
                 <Button Command="{Binding AddPlan}">Добавить</Button>
-                <ListBox ItemsSource="{Binding CreditPlans}"></ListBox>
+                <ListBox ItemsSource="{Binding CreditPlans}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type viewModels:CreditPlanDetailedViewModel}">
+                            <Border BorderBrush="Black" BorderThickness="2" Width="400">
+                                <StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="110"/>
+                                            <ColumnDefinition Width="265"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Button  CommandParameter="{Binding}"
+                                                     Command="{Binding EditCommand}">
+                                            Изменить
+                                        </Button>
+                                        <Button Grid.Column="2" Width="20" CommandParameter="{Binding}"
+                                                    Command="{Binding RemoveCommand}">
+                                            X
+                                        </Button>
+                                    </Grid>
+                                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                        <StackPanel>
+                                            <Label>Минимальное количество баллов</Label>
+                                            <Label Content="{Binding Item.MinimalScore}"></Label>
+                                        </StackPanel>
+                                        <StackPanel>
+                                            <Label>Сумма</Label>
+                                            <Label Content="{Binding Item.Amount}"></Label>
+                                        </StackPanel>
+                                        <StackPanel>
+                                            <Label>Цель кредита</Label>
+                                            <Label Content="{Binding Target}"></Label>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </StackPanel>
         </ScrollViewer>
     </Grid>
