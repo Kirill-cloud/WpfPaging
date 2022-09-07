@@ -2,10 +2,8 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using WpfPaging.Events;
 using WpfPaging.Messages;
 using WpfPaging.Pages;
 using WpfPaging.Services;
@@ -15,19 +13,15 @@ namespace WpfPaging.ViewModels
     public class LogPageViewModel : BindableBase
     {
         private readonly PageService _pageService;
-        private readonly EventBus _eventBus;
         private readonly MessageBus _messageBus;
 
         public ObservableCollection<string> Logs { get; set; } = new ObservableCollection<string>();
 
 
-        public LogPageViewModel(PageService pageService, EventBus eventBus, MessageBus messageBus)
+        public LogPageViewModel(PageService pageService, MessageBus messageBus)
         {
             _pageService = pageService;
-            _eventBus = eventBus;
             _messageBus = messageBus;
-
-            _eventBus.Subscribe<LeaveFromFirstPageEvent>(async @event => Debug.WriteLine($"You leave from fist page"));
 
             _messageBus.Receive<TextMessage>(this, async message =>
             {
