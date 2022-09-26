@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using WpfPaging.Models;
 using WpfPaging.Pages;
 using WpfPaging.Services;
-using WpfPaging.Events;
 using WpfPaging.Messages;
 using System.Windows.Input;
 using DevExpress.Mvvm;
@@ -20,15 +19,13 @@ namespace WpfPaging.ViewModels
     {
         private BankContext _db;
         private PageService _pageService;
-        private EventBus _eventBus;
         private MessageBus _messageBus;
         public List<BankViewModel> Banks { get; set; }
 
-        public BanksViewModel(BankContext context, PageService pageService, EventBus eventBus, MessageBus messageBus)
+        public BanksViewModel(BankContext context, PageService pageService, MessageBus messageBus)
         {
             _db = context;
             _pageService = pageService;
-            _eventBus = eventBus;
             _messageBus = messageBus;
 
             _messageBus.Receive<TextMessage>(this, ReciveMessage);

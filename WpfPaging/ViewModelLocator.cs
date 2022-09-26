@@ -27,7 +27,6 @@ namespace WpfPaging
 
             //services
             services.AddSingleton<PageService>();
-            services.AddSingleton<EventBus>();
             services.AddSingleton<MessageBus>();
             services.AddScoped<CreditPlanSelectorService>();
 
