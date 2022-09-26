@@ -20,6 +20,7 @@ namespace WpfPaging.Models.Enums
             FamilyStates.Widow => "Вдовец (вдова)",
             _ => throw new NotSupportedException("не известное состояние")
         };
+
         private static string GetStringState(JobTypes state) => state switch
         {
             JobTypes.PublicService => "Госслужба",
